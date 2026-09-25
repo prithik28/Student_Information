@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GRTIET · Student Information System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ============================================================
+     LOGIN SCREEN
+============================================================ -->
+<section id="loginScreen" class="login-screen">
+  <div class="login-screen__bg" aria-hidden="true">
+    <span class="login-orb login-orb--1"></span>
+    <span class="login-orb login-orb--2"></span>
+    <div class="login-grid-lines"></div>
+  </div>
+
+  <div class="login-layout">
+    <!-- Brand panel -->
+    <div class="login-brand">
+      <div class="login-brand__inner">
+        <div class="seal" aria-hidden="true">
+          <svg viewBox="0 0 100 100" class="seal__ring">
+            <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="1.4"/>
+            <circle cx="50" cy="50" r="38" fill="none" stroke="currentColor" stroke-width="0.7"/>
+          </svg>
+          <span class="seal__letters">GRT</span>
+        </div>
+        <p class="login-brand__eyebrow">Est. institution of engineering excellence</p>
+        <h1 class="login-brand__title">GRT Institute of<br>Engineering &amp; Technology</h1>
+        <p class="login-brand__desc">Student Information System — a single home for attendance, marks, timetables and everything academic.</p>
+
+        <ul class="login-brand__stats">
+          <li><strong>20+</strong><span>Departments &amp; sections</span></li>
+          <li><strong>6</strong><span>Core subjects tracked live</span></li>
+          <li><strong>24×7</strong><span>Portal access</span></li>
+        </ul>
+      </div>
+      <div class="login-brand__footer">GRTIET Campus · Tiruttani, Tamil Nadu</div>
+    </div>
+
+    <!-- Form panel -->
+    <div class="login-form-panel">
+      <div class="login-card" id="loginCard">
+        <div class="login-card__mark">
+          <span class="seal seal--sm"><span class="seal__letters">GRT</span></span>
+          <div>
+            <p class="login-card__brand">GRTIET</p>
+            <p class="login-card__sub">Student Information System</p>
+          </div>
+        </div>
+
+        <h2 class="login-card__title">Welcome back</h2>
+        <p class="login-card__hint">Sign in with your register number to continue.</p>
+
+        <div class="login-error" id="loginError" role="alert" hidden>
+          Invalid register number or password. Please try again.
+        </div>
+
+        <form id="loginForm" class="login-form" novalidate>
+          <label class="field">
+            <span class="field__label">Register Number</span>
+            <input type="text" id="regNo" class="field__input" placeholder="927622104001" autocomplete="username" required />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Password</span>
+            <div class="field__input-wrap">
+              <input type="password" id="password" class="field__input" placeholder="Enter your password" autocomplete="current-password" required />
+              <button type="button" id="togglePassword" class="field__toggle" aria-label="Show password">
+                <svg class="icon-eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg class="icon-eye-closed" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a21.6 21.6 0 0 1 5.06-5.94M9.9 4.24A10.6 10.6 0 0 1 12 4c7 0 11 7 11 7a21.6 21.6 0 0 1-2.4 3.36M14.12 14.12a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+              </button>
+            </div>
+          </label>
+
+          <div class="login-form__row">
+            <label class="checkbox">
+              <input type="checkbox" id="rememberMe" />
+              <span class="checkbox__box"></span>
+              Remember me
+            </label>
+            <a href="#" id="forgotPasswordLink" class="login-form__link">Forgot password?</a>
+          </div>
+
+          <button type="submit" id="loginSubmit" class="btn btn--primary btn--block btn--lg">
+            <span class="btn__text">Log In</span>
+            <span class="btn__spinner" aria-hidden="true"></span>
+          </button>
+
+          <button type="button" id="fillDemoBtn" class="login-demo-hint">
+            Use demo credentials <strong>927622104001 / grtiet@123</strong>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Forgot password modal -->
+<div class="modal" id="forgotModal">
+  <div class="modal__panel modal__panel--sm">
+    <button class="modal__close" data-close-modal aria-label="Close">&times;</button>
+    <h3>Reset your password</h3>
+    <p class="text-muted">This is a demo portal, so password resets aren't wired to email. In a live GRTIET deployment, a reset link would be sent to your registered college email address.</p>
+    <button class="btn btn--primary btn--block" data-close-modal>Got it</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     APPLICATION SHELL
+============================================================ -->
+<section id="appScreen" class="app-shell" hidden>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidenav" id="sidenav">
+    <div class="sidenav__brand">
+      <span class="seal seal--sm"><span class="seal__letters">GRT</span></span>
+      <div class="sidenav__brand-text">
+        <p class="sidenav__brand-name">GRTIET</p>
+        <p class="sidenav__brand-sub">SIS Portal</p>
+      </div>
+      <button class="sidenav__collapse" id="collapseBtn" aria-label="Collapse sidebar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+    </div>
+
+    <nav class="sidenav__nav">
+      <a href="#" class="sidenav__link" data-page="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="#" class="sidenav__link" data-page="profile">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+        <span>My Profile</span>
+      </a>
+      <a href="#" class="sidenav__link" data-page="attendance">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        <span>Attendance</span>
+      </a>
+      <a href="#" class="sidenav__link" data-page="marks">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M9 12h6M9 16h6M9 8h2"/></svg>
+        <span>Marks</span>
+      </a>
+      <a href="#" class="sidenav__link" data-page="timetable">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
+        <span>Timetable</span>
+      </a>
+      <a href="#" class="sidenav__link" data-page="assignments">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3h6l1 3H8l1-3z"/><rect x="5" y="6" width="14" height="15" rx="2"/><path d="M9 12h6M9 16h4"/></svg>
+        <span>Assignments</span>
+      </a>
+      <a href="#" class="sidenav__link" data-page="examinations">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5V4a2 2 0 0 1 2-2h11l3 3v14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19.5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+        <span>Examinations</span>
+      </a>
+      <a href="#" class="sidenav__link" data-page="announcements">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1z"/><path d="M16 8a5 5 0 0 1 0 8M19 5a9 9 0 0 1 0 14"/></svg>
+        <span>Announcements</span>
+      </a>
+      <a href="#" class="sidenav__link" data-page="students">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17.5" cy="8.5" r="2.4"/><path d="M15.5 14.3c2.6.4 4.5 2.3 4.5 5.7"/></svg>
+        <span>Students</span>
+      </a>
+      <a href="#" class="sidenav__link" data-page="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 0 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.55-1H3a2 2 0 0 1 0-4h.09a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1-1.55V3a2 2 0 0 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.55 1H21a2 2 0 0 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1z"/></svg>
+        <span>Settings</span>
+      </a>
+    </nav>
+
+    <div class="sidenav__footer">
+      <a href="#" class="sidenav__link sidenav__link--logout" data-page="logout">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span>Logout</span>
+      </a>
+      <div class="sidenav__user">
+        <span class="avatar-chip" data-bind="initials">AK</span>
+        <div class="sidenav__user-text">
+          <p data-bind="studentName">—</p>
+          <small data-bind="regNo">—</small>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="app-main">
+    <header class="topbar">
+      <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div class="topbar__title-wrap">
+        <h1 class="topbar__title" id="pageTitle">Dashboard</h1>
+        <p class="topbar__date" id="currentDate"></p>
+      </div>
+
+      <div class="topbar__search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="globalSearch" placeholder="Search students, subjects..." autocomplete="off" />
+        <div class="search-results" id="searchResults" hidden></div>
+      </div>
+
+      <div class="topbar__actions">
+        <div class="dropdown">
+          <button class="icon-btn" id="notifBtn" aria-label="Notifications">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+            <span class="icon-btn__badge" id="notifCount">0</span>
+          </button>
+          <div class="panel panel--notif" id="notifPanel">
+            <div class="panel__head">Notifications</div>
+            <div id="notifList"></div>
+            <button class="panel__foot" data-panel-goto="announcements">View all announcements</button>
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <button class="profile-pill" id="profileBtn">
+            <span class="avatar-chip" data-bind="initials">AK</span>
+            <span class="profile-pill__text">
+              <strong data-bind="studentName">—</strong>
+              <small data-bind="regNo">—</small>
+            </span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="panel panel--profile" id="profilePanel">
+            <button class="panel__item" data-panel-goto="profile">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+              My Profile
+            </button>
+            <button class="panel__item" data-panel-goto="settings">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.2-1.6l2-1.6-2-3.4-2.4 1a7 7 0 0 0-2.8-1.6L13 2h-4l-.6 2.8a7 7 0 0 0-2.8 1.6l-2.4-1-2 3.4 2 1.6A7 7 0 0 0 3 12c0 .5 0 1.1.2 1.6l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 2.8 1.6L9 22h4l.6-2.8a7 7 0 0 0 2.8-1.6l2.4 1 2-3.4-2-1.6c.2-.5.2-1.1.2-1.6z"/></svg>
+              Settings
+            </button>
+            <hr />
+            <button class="panel__item panel__item--danger" id="panelLogoutBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content" id="mainContent">
+
+      <!-- ============ DASHBOARD ============ -->
+      <section class="page is-active" id="page-dashboard">
+        <div class="welcome-banner">
+          <div>
+            <p class="welcome-banner__eyebrow">Semester 5 · Section A</p>
+            <h2>Welcome back, <span data-bind="studentName">Student</span>!</h2>
+            <p class="welcome-banner__sub">Here's how your academic year is shaping up.</p>
+          </div>
+          <div class="welcome-banner__ring">
+            <svg viewBox="0 0 130 130" id="dashAttendanceRing" class="ring">
+              <circle cx="65" cy="65" r="54" class="ring-track"/>
+              <circle cx="65" cy="65" r="54" class="ring-progress"/>
+            </svg>
+            <div class="welcome-banner__ring-label">
+              <span id="dashAttendanceLabel">0%</span>
+              <small>Attendance</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card stat-card--1">
+            <span class="stat-card__icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17.5" cy="8.5" r="2.4"/><path d="M15.5 14.3c2.6.4 4.5 2.3 4.5 5.7"/></svg></span>
+            <p class="stat-card__value"><span id="statTotalStudents">0</span></p>
+            <p class="stat-card__label">Total Students</p>
+          </div>
+          <div class="stat-card stat-card--2">
+            <span class="stat-card__icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span>
+            <p class="stat-card__value"><span id="statAttendance">0</span></p>
+            <p class="stat-card__label">Attendance</p>
+          </div>
+          <div class="stat-card stat-card--3">
+            <span class="stat-card__icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M9 12h6M9 16h6"/></svg></span>
+            <p class="stat-card__value"><span id="statCgpa">0</span></p>
+            <p class="stat-card__label">Current CGPA</p>
+          </div>
+          <div class="stat-card stat-card--4">
+            <span class="stat-card__icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3h6l1 3H8l1-3z"/><rect x="5" y="6" width="14" height="15" rx="2"/></svg></span>
+            <p class="stat-card__value"><span id="statPending">0</span></p>
+            <p class="stat-card__label">Pending Assignments</p>
+          </div>
+          <div class="stat-card stat-card--5">
+            <span class="stat-card__icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5V4a2 2 0 0 1 2-2h11l3 3v14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19.5z"/><path d="M8 8h8M8 12h8"/></svg></span>
+            <p class="stat-card__value"><span id="statExams">0</span></p>
+            <p class="stat-card__label">Upcoming Exams</p>
+          </div>
+        </div>
+
+        <div class="dash-grid">
+          <div class="card card--chart">
+            <div class="card__head"><h3>Academic Performance</h3><p>Total marks scored per subject (out of 200)</p></div>
+            <div class="bar-chart" id="performanceChart"></div>
+          </div>
+
+          <div class="card">
+            <div class="card__head"><h3>Subject-wise Marks</h3><p>Percentage &amp; grade summary</p></div>
+            <div class="mini-list" id="subjectMarksMini"></div>
+          </div>
+
+          <div class="card">
+            <div class="card__head"><h3>Today's Timetable</h3><p id="todayLabel"></p></div>
+            <div class="timetable-mini" id="todayTimetable"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ PROFILE ============ -->
+      <section class="page" id="page-profile">
+        <div class="card profile-card">
+          <div id="profileViewMode">
+            <div class="profile-head">
+              <span class="avatar-chip avatar-chip--xl" id="profileInitialsLarge">AK</span>
+              <div>
+                <h2 data-profile-view="name">—</h2>
+                <p class="text-muted" id="profileRegNo">—</p>
+                <p class="text-muted" id="profileDept">—</p>
+              </div>
+              <button class="btn btn--primary" id="editProfileBtn">Edit Profile</button>
+            </div>
+
+            <div class="profile-grid">
+              <div class="profile-field"><span>Year / Semester</span><strong id="profileYearSem">—</strong></div>
+              <div class="profile-field"><span>Date of Birth</span><strong id="profileDob">—</strong></div>
+              <div class="profile-field"><span>Blood Group</span><strong data-profile-view="bloodGroup">—</strong></div>
+              <div class="profile-field"><span>Email</span><strong data-profile-view="email">—</strong></div>
+              <div class="profile-field"><span>Phone</span><strong data-profile-view="phone">—</strong></div>
+              <div class="profile-field"><span>Faculty Advisor</span><strong id="profileAdvisor">—</strong></div>
+              <div class="profile-field"><span>Admission Year</span><strong id="profileAdmission">—</strong></div>
+              <div class="profile-field"><span>Current CGPA</span><strong id="profileCgpa">—</strong></div>
+              <div class="profile-field"><span>Overall Attendance</span><strong id="profileAttendance">—</strong></div>
+              <div class="profile-field profile-field--wide"><span>Address</span><strong data-profile-view="address">—</strong></div>
+            </div>
+          </div>
+
+          <form id="profileEditForm" class="profile-edit-form" hidden>
+            <h3>Edit Profile</h3>
+            <div class="form-grid">
+              <label class="field"><span class="field__label">Full Name</span><input class="field__input" id="editName" required /></label>
+              <label class="field"><span class="field__label">Email</span><input class="field__input" type="email" id="editEmail" required /></label>
+              <label class="field"><span class="field__label">Phone</span><input class="field__input" id="editPhone" required /></label>
+              <label class="field"><span class="field__label">Blood Group</span><input class="field__input" id="editBloodGroup" required /></label>
+              <label class="field field--wide"><span class="field__label">Address</span><textarea class="field__input" id="editAddress" rows="2" required></textarea></label>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn btn--ghost" id="cancelEditBtn">Cancel</button>
+              <button type="submit" class="btn btn--primary">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- ============ ATTENDANCE ============ -->
+      <section class="page" id="page-attendance">
+        <div class="attendance-summary">
+          <div class="card attendance-summary__ring">
+            <svg viewBox="0 0 170 170" id="attendanceRingBig" class="ring ring--lg">
+              <circle cx="85" cy="85" r="70" class="ring-track"/>
+              <circle cx="85" cy="85" r="70" class="ring-progress"/>
+            </svg>
+            <div class="ring-center"><span id="attendanceRingLabel">0%</span><small>Overall</small></div>
+          </div>
+          <div class="attendance-summary__stats">
+            <div class="card stat-mini"><strong id="attTotalClasses">0</strong><span>Total Classes</span></div>
+            <div class="card stat-mini stat-mini--good"><strong id="attTotalPresent">0</strong><span>Present</span></div>
+            <div class="card stat-mini stat-mini--bad"><strong id="attTotalAbsent">0</strong><span>Absent</span></div>
+            <div class="card stat-mini"><strong id="attOverallPct">0%</strong><span>Percentage</span></div>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="card">
+            <div class="card__head"><h3>Subject-wise Attendance</h3></div>
+            <div id="attendanceSubjectList"></div>
+          </div>
+          <div class="card">
+            <div class="card__head"><h3>Attendance Calendar</h3><p id="calendarMonthLabel"></p></div>
+            <div class="calendar-grid" id="attendanceCalendar"></div>
+            <div class="calendar-legend">
+              <span><i class="dot dot--present"></i> Present</span>
+              <span><i class="dot dot--absent"></i> Absent</span>
+              <span><i class="dot dot--holiday"></i> Holiday</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ MARKS ============ -->
+      <section class="page" id="page-marks">
+        <div class="marks-summary">
+          <div class="card stat-mini"><strong id="marksOverallPct">0%</strong><span>Overall Percentage</span></div>
+          <div class="card stat-mini"><strong id="marksCgpa">0</strong><span>Current CGPA</span></div>
+        </div>
+
+        <div class="card">
+          <div class="card__head"><h3>Performance Chart</h3><p>Percentage scored per subject</p></div>
+          <div class="linechart" id="marksChart"></div>
+        </div>
+
+        <div class="card table-card">
+          <div class="card__head"><h3>Detailed Marks</h3></div>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr><th>Subject</th><th>Internal</th><th>Assignment</th><th>Model Exam</th><th>Semester Exam</th><th>Total</th><th>Grade</th></tr>
+              </thead>
+              <tbody id="marksTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ TIMETABLE ============ -->
+      <section class="page" id="page-timetable">
+        <div class="card table-card">
+          <div class="card__head"><h3>Weekly Timetable</h3><p>Semester 5 · Section A</p></div>
+          <div class="table-scroll">
+            <div class="tt-grid" id="timetableGrid"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ ASSIGNMENTS ============ -->
+      <section class="page" id="page-assignments">
+        <div class="filter-tabs" id="assignmentFilters">
+          <button class="filter-tab is-active" data-filter="All">All <span class="filter-tab__count">0</span></button>
+          <button class="filter-tab" data-filter="Pending">Pending <span class="filter-tab__count">0</span></button>
+          <button class="filter-tab" data-filter="Submitted">Submitted <span class="filter-tab__count">0</span></button>
+          <button class="filter-tab" data-filter="Overdue">Overdue <span class="filter-tab__count">0</span></button>
+        </div>
+        <div class="assign-grid" id="assignmentsGrid"></div>
+      </section>
+
+      <!-- ============ EXAMINATIONS ============ -->
+      <section class="page" id="page-examinations">
+        <div class="card countdown-card">
+          <div class="card__head"><h3>Next Examination</h3><p id="nextExamLabel">—</p></div>
+          <p class="countdown-meta" id="nextExamMeta"></p>
+          <div class="countdown-row" id="countdownRow"></div>
+        </div>
+
+        <div class="two-col">
+          <div class="card">
+            <div class="card__head"><h3>Upcoming Exams</h3></div>
+            <div class="exam-list" id="examsUpcoming"></div>
+          </div>
+          <div class="card">
+            <div class="card__head"><h3>Previous Exams</h3></div>
+            <div class="exam-list" id="examsPrevious"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ ANNOUNCEMENTS ============ -->
+      <section class="page" id="page-announcements">
+        <div class="chip-row" id="announcementFilters">
+          <button class="chip is-active" data-category="All">All</button>
+          <button class="chip" data-category="Examinations">Examinations</button>
+          <button class="chip" data-category="Assessment">Assessment</button>
+          <button class="chip" data-category="Seminar">Seminar</button>
+          <button class="chip" data-category="Assignment">Assignment</button>
+          <button class="chip" data-category="Events">Events</button>
+        </div>
+        <div class="ann-list" id="announcementsList"></div>
+      </section>
+
+      <!-- ============ STUDENTS ============ -->
+      <section class="page" id="page-students">
+        <div class="students-toolbar">
+          <div class="topbar__search topbar__search--inline">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="studentSearch" placeholder="Search by name or register number..." autocomplete="off" />
+          </div>
+          <select id="deptFilter" class="select-input"><option value="All">All Departments</option></select>
+          <select id="yearFilter" class="select-input">
+            <option value="All">All Years</option>
+            <option>1st Year</option><option>2nd Year</option><option>3rd Year</option><option>4th Year</option>
+          </select>
+          <select id="sortFilter" class="select-input">
+            <option value="name-asc">Name (A–Z)</option>
+            <option value="name-desc">Name (Z–A)</option>
+            <option value="cgpa-desc">CGPA (High–Low)</option>
+            <option value="cgpa-asc">CGPA (Low–High)</option>
+            <option value="attendance-desc">Attendance (High–Low)</option>
+            <option value="attendance-asc">Attendance (Low–High)</option>
+          </select>
+        </div>
+        <p class="text-muted" id="studentsCount"></p>
+        <div class="students-grid" id="studentsGrid"></div>
+      </section>
+
+      <!-- ============ SETTINGS ============ -->
+      <section class="page" id="page-settings">
+        <div class="card">
+          <div class="card__head"><h3>Appearance</h3></div>
+          <div class="setting-row">
+            <div><p class="setting-row__label">Theme</p><p class="setting-row__desc">Choose between light and dark mode.</p></div>
+            <div class="theme-toggle-group" id="themeToggleGroup">
+              <button data-theme="light" class="theme-btn">☀ Light</button>
+              <button data-theme="dark" class="theme-btn">☾ Dark</button>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div><p class="setting-row__label">Animations</p><p class="setting-row__desc">Enable smooth motion and transitions across the portal.</p></div>
+            <label class="switch"><input type="checkbox" id="animToggle" /><span class="switch__track"></span></label>
+          </div>
+          <div class="setting-row">
+            <div><p class="setting-row__label">Compact Sidebar</p><p class="setting-row__desc">Collapse the sidebar to icons only.</p></div>
+            <label class="switch"><input type="checkbox" id="compactToggle" /><span class="switch__track"></span></label>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__head"><h3>Notifications</h3></div>
+          <div class="setting-row">
+            <div><p class="setting-row__label">Push Notifications</p><p class="setting-row__desc">Get notified about announcements, exams and deadlines.</p></div>
+            <label class="switch"><input type="checkbox" id="notifToggle" /><span class="switch__track"></span></label>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__head"><h3>Account</h3></div>
+          <div class="setting-row">
+            <div><p class="setting-row__label">Log out</p><p class="setting-row__desc">End your current GRTIET SIS session.</p></div>
+            <button class="btn btn--danger-outline" id="settingsLogoutBtn">Logout</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</section>
+
+<!-- Student details modal -->
+<div class="modal" id="studentModal">
+  <div class="modal__panel">
+    <button class="modal__close" data-close-modal aria-label="Close">&times;</button>
+    <div class="modal-student">
+      <span class="avatar-chip avatar-chip--xl" id="modalAvatar">--</span>
+      <h3 id="modalName">—</h3>
+      <p class="text-muted" id="modalReg">—</p>
+      <span class="status-pill" id="modalStatus">—</span>
+
+      <div class="profile-grid">
+        <div class="profile-field"><span>Department</span><strong id="modalDept">—</strong></div>
+        <div class="profile-field"><span>Year</span><strong id="modalYear">—</strong></div>
+        <div class="profile-field"><span>Section</span><strong id="modalSection">—</strong></div>
+        <div class="profile-field"><span>CGPA</span><strong id="modalCgpa">—</strong></div>
+        <div class="profile-field"><span>Attendance</span><strong id="modalAttendance">—</strong></div>
+        <div class="profile-field"><span>Email</span><strong id="modalEmail">—</strong></div>
+        <div class="profile-field profile-field--wide"><span>Phone</span><strong id="modalPhone">—</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toasts -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
