@@ -8,7 +8,7 @@ departments:[{id:"d1",name:"Computer Science & Engineering",code:"CSE"},{id:"d2"
 courses:[{id:"c1",name:"B.E. Computer Science",code:"BE-CSE",duration:4,department:"d1"},{id:"c2",name:"B.Tech Information Technology",code:"BTECH-IT",duration:4,department:"d2"},{id:"c3",name:"B.E. Electronics",code:"BE-ECE",duration:4,department:"d3"}],
 subjects:[{id:"s1",name:"Programming in C",code:"CS101",semester:1,credits:4},{id:"s2",name:"Database Management Systems",code:"CS301",semester:3,credits:4},{id:"s3",name:"Computer Networks",code:"CS401",semester:4,credits:3},{id:"s4",name:"Web Technologies",code:"CS302",semester:3,credits:3}],
 students:[
-{id:"u3",register:"24CSE001",name:"Prithi Kumar",email:"student@westlake.edu",phone:"9876543210",department:"d1",course:"c1",year:2,semester:3,address:"Tamil Nadu"},
+{id:"u3",register:"24CSE001",name:"Prithi k",email:"student@westlake.edu",phone:"9876543210",department:"d1",course:"c1",year:2,semester:3,address:"Tamil Nadu"},
 {id:"st2",register:"24CSE002",name:"Priya Sharma",email:"priya@westlake.edu",phone:"9876500001",department:"d1",course:"c1",year:2,semester:3,address:"Chennai"},
 {id:"st3",register:"25IT001",name:"Rahul Menon",email:"rahul@westlake.edu",phone:"9876500002",department:"d2",course:"c2",year:1,semester:1,address:"Madurai"},
 {id:"st4",register:"23ECE014",name:"Kavya Raj",email:"kavya@westlake.edu",phone:"9876500003",department:"d3",course:"c3",year:3,semester:5,address:"Coimbatore"},
